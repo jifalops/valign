@@ -45,9 +45,11 @@ class ValignTextarea extends PolymerElement {
     });
 
     var doc = new AlignedDoc(lineGroups);
-
-    output.setInnerHtml(textLines.join('<br>'));
     encoded = doc.toString();
+
+    var result = formatDocument(doc);
+    result = spaceToNbsp(result);
+    output.setInnerHtml(result.join('<br>'));
   }
 
   List<String> getTextLines(Element el) {
@@ -61,6 +63,32 @@ class ValignTextarea extends PolymerElement {
       lines[i] = div.text.replaceAll('&nbsp;', ' ').trim();
     }
     return lines;
+  }
+
+  List<String> formatDocument(AlignedDoc doc) {
+    var list = new List<String>();
+    doc.lineGroups.forEach((lineGroup) {
+      var widths = lineGroup.measureColWidths();
+      lineGroup.lines.forEach((line) {
+        var sb = new StringBuffer();
+        for (int i = 0; i < line.tokenGroups.length; ++i) {
+          var tg = line.tokenGroups[i];
+          sb.write(line.text.substring(tg.start(), tg.start() + tg.length()));
+          sb.write(' ' * (widths[i] - tg.length() + 1));
+        }
+        list.add(sb.toString().trim());
+      });
+      list.add('');
+    });
+    return list;
+  }
+
+  List<String> spaceToNbsp(List<String> spaced) {
+    var list = new List<String>();
+    spaced.forEach((line) {
+      list.add(line.trim().replaceAll(' ', '&nbsp;'));
+    });
+    return list;
   }
 
   // Optional lifecycle methods - uncomment if needed.
