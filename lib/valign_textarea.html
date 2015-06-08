@@ -1,0 +1,36 @@
+<!--
+  Copyright (c) 2015, <your name>. All rights reserved. Use of this source code
+  is governed by a BSD-style license that can be found in the LICENSE file.
+-->
+
+<!-- import polymer-element's definition -->
+<link rel="import" href="../../packages/polymer/polymer.html">
+
+<polymer-element name="valign-textarea">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #container, #output {
+        display: block;
+        width: 60em;
+        height: 10em;
+        border: 1px solid #000;
+      }
+      .interpretation {
+        background-color: #eee;
+        width: 60em;
+        height: 5em;
+        border: 1px solid #000;
+      }
+    </style>
+    Raw Text:
+    <div id='container' label="" on-keyup="{{valign}}" contenteditable='true'></div>
+    Aligned:
+    <div id='output'></div>
+    Encoded:
+    <div class='interpretation'>{{encoded}}</div>
+  </template>
+  <script type="application/dart" src="valign_textarea.dart"></script>
+</polymer-element>
