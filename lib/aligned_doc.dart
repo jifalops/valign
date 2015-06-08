@@ -7,6 +7,6 @@ class AlignedDoc {
 
   @override
   String toString() {
-    return '{"lineGroups":[' + lineGroups.join(', ') + ']';
+    return lineGroups.join(r'\n\n');
   }
 }

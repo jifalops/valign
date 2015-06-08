@@ -3,11 +3,11 @@ import 'line.dart';
 class LineGroup {
   final List<Line> lines;
 
-  LineGroup(this.lines) {
-
-  }
+  LineGroup(this.lines) {}
 
   List<int> measureColWidths() {
+
+    // Count the max number of columns in a line.
     int numCols = 0;
     var colWidths = new List<int>();
     lines.forEach((line) {
@@ -16,6 +16,7 @@ class LineGroup {
       }
     });
 
+    // Find the widest tokengroup in each column.
     for (int i = 0; i < numCols; ++i) {
       colWidths.add(0);
       lines.forEach((line) {
@@ -32,7 +33,6 @@ class LineGroup {
 
   @override
   String toString() {
-    return '{"colWidths":[' + measureColWidths().join(', ') + '], "lines":' +
-        lines.join(', ') + '}';
+    return lines.join(r'\n');
   }
 }

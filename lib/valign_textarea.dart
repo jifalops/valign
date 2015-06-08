@@ -39,8 +39,10 @@ class ValignTextarea extends PolymerElement {
         lines = new List<Line>();
         lineGroups.add(new LineGroup(lines));
       } else {
-        var tokens = Token.parseType(textLine, Token.TEXT);
-        lines.add(new Line(textLine, TokenGroup.wrapTokens(tokens)));
+        var tokens = Token.parse(textLine, Token.TEXT);
+
+        // just make each token its own group for now.
+        lines.add(new Line(TokenGroup.perToken(tokens)));
       }
     });
 
@@ -54,9 +56,9 @@ class ValignTextarea extends PolymerElement {
 
   List<String> getTextLines(Element el) {
     var lines = el.innerHtml.trim().split('<br>');
-    if (lines.last.trim() == '<br>') {
-      lines.removeLast();
-    }
+//    if (lines.last.trim() == '<br>') {
+//      lines.removeLast();
+//    }
     var div = new DivElement();
     for (int i = 0; i < lines.length; ++i) {
       div.setInnerHtml(lines[i]);
@@ -73,12 +75,12 @@ class ValignTextarea extends PolymerElement {
         var sb = new StringBuffer();
         for (int i = 0; i < line.tokenGroups.length; ++i) {
           var tg = line.tokenGroups[i];
-          sb.write(line.text.substring(tg.start(), tg.start() + tg.length()));
+          sb.write(tg.toString());
           sb.write(' ' * (widths[i] - tg.length() + 1));
         }
         list.add(sb.toString().trim());
       });
-      list.add('');
+      list.add(''); // blank line between groups.
     });
     return list;
   }
